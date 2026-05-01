@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Poligoane și Unghiuri</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap');
+:root {
+  --blue:#185FA5; --blue-l:#E6F1FB;
+  --teal:#0F6E56; --teal-l:#E1F5EE;
+  --amber:#BA7517; --amber-l:#FAEEDA;
+  --coral:#993C1D; --coral-l:#FAECE7;
+  --purple:#534AB7; --purple-l:#EEEDFE;
+  --green:#3B6D11; --green-l:#EAF3DE;
+  --red:#A32D2D; --red-l:#FCEBEB;
+  --bg:#FFFDF8; --bg2:#F5F2EA;
+  --text:#2C2C2A; --muted:#6B6B68;
+  --border:rgba(0,0,0,0.1);
+  --r:16px; --rs:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{width:100%;overflow-x:hidden;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+.app{max-width:440px;margin:0 auto;padding-bottom:40px;}
+
+.header{background:linear-gradient(135deg,#1a1464 0%,#185FA5 50%,#0F6E56 100%);padding:28px 20px 22px;text-align:center;}
+.header-title{font-family:'Fredoka One',cursive;font-size:28px;color:#fff;letter-spacing:.5px;}
+.header-sub{font-size:14px;color:rgba(255,255,255,.75);margin-top:4px;}
+
+.tabs{display:flex;background:var(--bg2);border-bottom:2px solid var(--border);position:sticky;top:0;z-index:10;}
+.tab{
+  flex:1; display:block; padding:12px 4px;
+  border:none; background:transparent;
+  color:var(--muted); font-family:'Nunito',sans-serif;
+  font-size:12px; font-weight:700; cursor:pointer;
+  border-bottom:3px solid transparent; text-align:center;
+  white-space:nowrap;
+  -webkit-appearance:none; appearance:none;
+  touch-action:manipulation;
+  user-select:none; -webkit-user-select:none;
+}
+.tab.active{color:var(--blue);border-bottom-color:var(--blue);background:var(--bg);}
+
+.panel{display:none;padding:14px 14px 0;}
+.panel.active{display:block;}
+
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:12px;}
+.card h3{font-size:16px;font-weight:800;color:var(--text);margin-bottom:8px;}
+.card p{font-size:14px;color:var(--muted);line-height:1.65;margin-bottom:6px;}
+.card p:last-child{margin-bottom:0;}
+strong{color:var(--text);}
+
+.canvas-wrap{background:var(--bg2);border-radius:var(--r);padding:10px;margin-bottom:12px;text-align:center;}
+canvas{border-radius:8px;display:block;margin:0 auto;max-width:100%;}
+
+.badge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:12px;font-weight:700;margin-bottom:8px;}
+.badge-basic{background:var(--teal-l);color:var(--teal);}
+.badge-med{background:var(--amber-l);color:var(--amber);}
+.badge-adv{background:var(--coral-l);color:var(--coral);}
+
+.formula{background:var(--blue-l);border-radius:var(--rs);padding:10px 14px;font-size:14px;font-weight:700;color:var(--blue);text-align:center;margin:8px 0;}
+
+.shape-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+.shape-btn{
+  flex:1; min-width:70px; padding:9px 4px;
+  border:1.5px solid var(--border); border-radius:var(--rs);
+  background:#fff; color:var(--muted);
+  font-family:'Nunito',sans-serif; font-size:12px; font-weight:700;
+  cursor:pointer; text-align:center;
+  touch-action:manipulation; -webkit-appearance:none;
+}
+.shape-btn.sel{border-color:var(--blue);color:var(--blue);background:var(--blue-l);}
+
+.stat-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.stat{background:var(--bg2);border-radius:var(--rs);padding:12px;text-align:center;}
+.stat-val{font-family:'Fredoka One',cursive;font-size:22px;color:var(--text);}
+.stat-lbl{font-size:12px;color:var(--muted);margin-top:2px;font-weight:600;}
+
+.angle-wrap{display:flex;align-items:center;gap:10px;margin:10px 0;padding:0 2px;}
+.angle-label{font-size:13px;font-weight:700;color:var(--muted);min-width:50px;}
+input[type=range]{flex:1;height:6px;-webkit-appearance:none;appearance:none;background:var(--bg2);border-radius:3px;outline:none;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:var(--blue);cursor:pointer;box-shadow:0 2px 8px rgba(24,95,165,.35);}
+.angle-val{font-family:'Fredoka One',cursive;font-size:18px;color:var(--blue);min-width:52px;text-align:right;}
+
+.quiz-num{font-size:12px;color:var(--muted);font-weight:600;margin-bottom:6px;}
+.progress-bar{height:5px;background:var(--bg2);border-radius:3px;margin-bottom:12px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--blue);border-radius:3px;transition:width .4s;}
+.quiz-q{font-size:15px;font-weight:700;color:var(--text);margin-bottom:14px;line-height:1.5;}
+.quiz-opt{
+  display:block; width:100%; padding:12px 14px; margin-bottom:8px;
+  border:1.5px solid var(--border); border-radius:var(--rs);
+  background:#fff; color:var(--text);
+  font-family:'Nunito',sans-serif; font-size:14px; font-weight:600;
+  cursor:pointer; text-align:left;
+  touch-action:manipulation; -webkit-appearance:none;
+}
+.quiz-opt.correct{background:var(--green-l);border-color:var(--green);color:var(--green);}
+.quiz-opt.wrong{background:var(--red-l);border-color:var(--red);color:var(--red);}
+.feedback{font-size:14px;font-weight:600;padding:12px 14px;border-radius:var(--rs);margin-top:8px;line-height:1.55;display:none;}
+.feedback.ok{background:var(--green-l);color:var(--green);}
+.feedback.no{background:var(--red-l);color:var(--red);}
+.next-btn{
+  display:none; margin-top:10px; width:100%; padding:13px;
+  border:none; border-radius:var(--rs);
+  background:var(--blue); color:#fff;
+  font-family:'Nunito',sans-serif; font-size:15px; font-weight:700;
+  cursor:pointer; touch-action:manipulation; -webkit-appearance:none;
+}
+
+.score-card{text-align:center;padding:24px 16px;background:linear-gradient(135deg,var(--green-l),var(--teal-l));border-radius:var(--r);margin-bottom:12px;}
+.score-emoji{font-size:44px;margin-bottom:8px;}
+.score-title{font-family:'Fredoka One',cursive;font-size:24px;color:var(--teal);}
+.score-sub{font-size:14px;color:var(--muted);margin-top:4px;font-weight:600;}
+.retry-btn{
+  margin-top:14px; padding:12px 28px;
+  border:2px solid var(--teal); border-radius:var(--rs);
+  background:transparent; color:var(--teal);
+  font-family:'Nunito',sans-serif; font-size:14px; font-weight:700;
+  cursor:pointer; touch-action:manipulation; -webkit-appearance:none;
+}
+
+.learn-next{background:linear-gradient(135deg,var(--purple-l),var(--blue-l));border-radius:var(--r);padding:16px;margin-top:12px;}
+.learn-next h3{font-size:15px;font-weight:800;color:var(--purple);margin-bottom:10px;}
+.learn-item{font-size:14px;color:var(--text);padding:7px 0;border-bottom:1px solid rgba(0,0,0,.07);font-weight:600;line-height:1.4;}
+.learn-item:last-child{border:none;}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="header">
+  <div class="header-title">Poligoane și Unghiuri</div>
+  <div class="header-sub">Lecție interactivă pentru elevi</div>
+</div>
+
+<div class="tabs" id="tabs-bar">
+  <button type="button" class="tab active" id="tab-intro">🏠 Intro</button>
+  <button type="button" class="tab" id="tab-forms">🔷 Forme</button>
+  <button type="button" class="tab" id="tab-angles">📐 Unghiuri</button>
+  <button type="button" class="tab" id="tab-quiz">✏️ Test</button>
+</div>
+
+<!-- INTRO -->
+<div class="panel active" id="panel-intro">
+  <div class="canvas-wrap">
+    <canvas id="c-intro" width="320" height="170"></canvas>
+  </div>
+  <div class="card">
+    <h3>🌿 Gândește-te la o grădină</h3>
+    <p>Imaginează-ți că vrei să pui un <strong>gard</strong> în jurul grădinii tale. Grădina are o formă — un pătrat, un triunghi, un hexagon. Acea formă se numește <strong>poligon</strong>.</p>
+    <p>Un poligon este orice figură plată, închisă, formată din linii drepte. Liniile = <em>laturi</em>, colțurile = <em>vârfuri</em>.</p>
+  </div>
+  <div class="card">
+    <span class="badge badge-basic">Nivelul 1 — De bază</span>
+    <h3>Perimetrul = gardul</h3>
+    <p>Perimetrul este lungimea totală a gardului — adică <strong>suma tuturor laturilor</strong>.</p>
+    <div class="formula">Perimetru = L1 + L2 + L3 + ...</div>
+    <p>Pătrat cu latura 5 m → 5+5+5+5 = <strong>20 m</strong> de gard</p>
+  </div>
+  <div class="card">
+    <span class="badge badge-med">Nivelul 2 — Intermediar</span>
+    <h3>Aria = gazonul</h3>
+    <p>Aria este spațiul <em>din interiorul</em> grădinii — suprafața pe care crește iarba.</p>
+    <div class="formula">Pătrat: latură × latură</div>
+    <div class="formula">Dreptunghi: lungime × lățime</div>
+    <div class="formula">Triunghi: (bază × înălțime) ÷ 2</div>
+    <p>Pătrat cu latura 5 m → Arie = 5×5 = <strong>25 m²</strong></p>
+  </div>
+  <div class="card">
+    <span class="badge badge-adv">Nivelul 3 — Avansat</span>
+    <h3>Suma unghiurilor interioare</h3>
+    <p>Orice poligon respectă o regulă:</p>
+    <div class="formula">Suma = (n − 2) × 180°</div>
+    <p>Triunghi: 1×180 = <strong>180°</strong> &nbsp;|&nbsp; Pătrat: 2×180 = <strong>360°</strong> &nbsp;|&nbsp; Hexagon: 4×180 = <strong>720°</strong></p>
+  </div>
+</div>
+
+<!-- FORME -->
+<div class="panel" id="panel-forms">
+  <div class="shape-row">
+    <button type="button" class="shape-btn sel" id="sb-tri">▲ Triunghi</button>
+    <button type="button" class="shape-btn" id="sb-sq">■ Pătrat</button>
+    <button type="button" class="shape-btn" id="sb-rect">▬ Dreptunghi</button>
+    <button type="button" class="shape-btn" id="sb-hex">⬡ Hexagon</button>
+  </div>
+  <div class="canvas-wrap">
+    <canvas id="c-forms" width="320" height="190"></canvas>
+  </div>
+  <div class="stat-row">
+    <div class="stat"><div class="stat-val" id="sv-sides">3</div><div class="stat-lbl">Laturi</div></div>
+    <div class="stat"><div class="stat-val" id="sv-angles">180°</div><div class="stat-lbl">Suma unghiurilor</div></div>
+  </div>
+  <div class="stat-row">
+    <div class="stat"><div class="stat-val" id="sv-perim">18 cm</div><div class="stat-lbl">Perimetru</div></div>
+    <div class="stat"><div class="stat-val" id="sv-area">15.6 cm²</div><div class="stat-lbl">Arie</div></div>
+  </div>
+  <div class="card">
+    <h3 id="sd-title">Triunghiul</h3>
+    <p id="sd-text">Cea mai simplă figură cu laturi! 3 laturi, 3 vârfuri. Suma unghiurilor = 180°.</p>
+  </div>
+</div>
+
+<!-- UNGHIURI -->
+<div class="panel" id="panel-angles">
+  <div class="canvas-wrap">
+    <canvas id="c-angles" width="320" height="200"></canvas>
+  </div>
+  <div class="angle-wrap">
+    <span class="angle-label">Unghi:</span>
+    <input type="range" min="5" max="355" value="90" id="ang-slider" step="1">
+    <span class="angle-val" id="ang-val">90°</span>
+  </div>
+  <div class="card">
+    <h3 id="ang-type-title">Unghi drept</h3>
+    <p id="ang-type-desc">Exact 90°. Recunoscut prin pătrățelul din colț. Colțul caietului!</p>
+  </div>
+  <div class="card">
+    <h3>Tipuri de unghiuri</h3>
+    <p><strong>Ascuțit:</strong> mai mic de 90° — ca vârful unui ac</p>
+    <p><strong>Drept:</strong> exact 90° — colțul caietului</p>
+    <p><strong>Obtuz:</strong> între 90° și 180° — mai deschis</p>
+    <p><strong>Plat:</strong> exact 180° — o linie dreaptă</p>
+    <p><strong>Reflex:</strong> mai mare de 180° — "se întoarce"</p>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="panel" id="panel-quiz">
+  <div id="quiz-area">
+    <div class="card">
+      <div class="quiz-num" id="quiz-num">Întrebarea 1 din 3</div>
+      <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:33%"></div></div>
+      <div class="quiz-q" id="quiz-q"></div>
+      <div id="quiz-opts"></div>
+      <div class="feedback" id="quiz-fb"></div>
+      <button type="button" class="next-btn" id="quiz-next">Continuă →</button>
+    </div>
+  </div>
+  <div id="score-area" style="display:none">
+    <div class="score-card">
+      <div class="score-emoji" id="score-emoji">🏆</div>
+      <div class="score-title" id="score-title">Felicitări!</div>
+      <div class="score-sub" id="score-sub"></div>
+      <br>
+      <button type="button" class="retry-btn" id="retry-btn">↺ Încearcă din nou</button>
+    </div>
+  </div>
+  <div class="learn-next">
+    <h3>📚 Ce să înveți în continuare</h3>
+    <div class="learn-item">▸ Cercul — raza, diametrul și Pi (π)</div>
+    <div class="learn-item">▸ Figuri 3D: cub, sferă, cilindru</div>
+    <div class="learn-item">▸ Simetria și axele de simetrie</div>
+    <div class="learn-item">▸ Coordonate și grafice (planul Oxy)</div>
+    <div class="learn-item">▸ Fracții și procente în geometrie</div>
+  </div>
+</div>
+
+</div>
+
+<script>
+var C={blue:'#185FA5',blueL:'#E6F1FB',teal:'#0F6E56',amber:'#BA7517',coral:'#993C1D',purple:'#534AB7',bg2:'#F5F2EA',text:'#2C2C2A',muted:'#8a8882'};
+
+/* ── TABS ── attach both touchend+click; touchend calls preventDefault to stop ghost click */
+var TAB_IDS=['intro','forms','angles','quiz'];
+TAB_IDS.forEach(function(id){
+  var btn=document.getElementById('tab-'+id);
+  function go(e){if(e.type==='touchend')e.preventDefault();showTab(id);}
+  btn.addEventListener('touchend',go,{passive:false});
+  btn.addEventListener('click',go);
+});
+
+function showTab(id){
+  TAB_IDS.forEach(function(x){
+    document.getElementById('tab-'+x).classList.toggle('active',x===id);
+    document.getElementById('panel-'+x).classList.toggle('active',x===id);
+  });
+  if(id==='intro')  window.requestAnimationFrame(drawIntro);
+  if(id==='forms')  window.requestAnimationFrame(function(){drawShape(curShape);});
+  if(id==='angles') window.requestAnimationFrame(function(){drawAngle(curAngle);});
+  if(id==='quiz')   renderQ();
+}
+
+/* ── HELPERS ── */
+function hexPts(cx,cy,r){var p=[];for(var i=0;i<6;i++){var a=Math.PI/180*(60*i-30);p.push([cx+r*Math.cos(a),cy+r*Math.sin(a)]);}return p;}
+function poly(ctx,pts,fill,stroke,lw){
+  ctx.beginPath();
+  pts.forEach(function(p,i){i===0?ctx.moveTo(p[0],p[1]):ctx.lineTo(p[0],p[1]);});
+  ctx.closePath();
+  if(fill){ctx.fillStyle=fill;ctx.fill();}
+  if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||2;ctx.stroke();}
+}
+
+/* ── INTRO ── */
+function drawIntro(){
+  var cv=document.getElementById('c-intro');if(!cv)return;
+  var ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle=C.bg2;ctx.fillRect(0,0,W,H);
+  var shapes=[
+    {pts:[[18,155],[82,155],[82,88],[18,88]],   col:C.blue,  lbl:'Pătrat',     sub:'4 laturi'},
+    {pts:[[50,88],[18,155],[82,155]],            col:C.amber, lbl:'Triunghi',   sub:'3 laturi'},
+    {pts:[[100,155],[210,155],[210,105],[100,105]],col:C.teal,lbl:'Dreptunghi', sub:'4 laturi'},
+    {pts:hexPts(270,120,46),                    col:C.purple,lbl:'Hexagon',    sub:'6 laturi'}
+  ];
+  shapes.forEach(function(s){
+    poly(ctx,s.pts,s.col+'28',null);
+    poly(ctx,s.pts,null,s.col,2);
+    s.pts.forEach(function(p){ctx.beginPath();ctx.arc(p[0],p[1],3,0,6.28);ctx.fillStyle=s.col;ctx.fill();});
+    var cx=s.pts.reduce(function(a,p){return a+p[0];},0)/s.pts.length;
+    var cy=s.pts.reduce(function(a,p){return a+p[1];},0)/s.pts.length;
+    ctx.textAlign='center';
+    ctx.fillStyle=s.col;ctx.font='700 11px Nunito,sans-serif';ctx.fillText(s.lbl,cx,cy-5);
+    ctx.fillStyle=C.muted;ctx.font='600 10px Nunito,sans-serif';ctx.fillText(s.sub,cx,cy+8);
+  });
+}
+
+/* ── FORMS ── */
+var curShape='tri';
+var SD={
+  tri: {sides:3,angles:'180°',perim:'18 cm',area:'15.6 cm²',title:'Triunghiul',
+        text:'Cea mai simplă figură cu laturi! 3 laturi, 3 vârfuri. Suma unghiurilor = 180°. Arie = (bază × înălțime) ÷ 2.',
+        pts:[[160,32],[268,168],[52,168]],col:C.blue,slbls:['6 cm','7 cm','5 cm']},
+  sq:  {sides:4,angles:'360°',perim:'20 cm',area:'25 cm²',title:'Pătratul',
+        text:'4 laturi egale și 4 unghiuri de 90°. Latura = 5 cm. Arie = 5×5 = 25 cm².',
+        pts:[[76,44],[244,44],[244,172],[76,172]],col:C.teal,slbls:['5 cm','5 cm','5 cm','5 cm']},
+  rect:{sides:4,angles:'360°',perim:'22 cm',area:'24 cm²',title:'Dreptunghiul',
+        text:'4 laturi, 4 unghiuri drepte. Laturile opuse sunt egale. Lung.=8cm, Lăț.=3cm.',
+        pts:[[24,78],[296,78],[296,148],[24,148]],col:C.amber,slbls:['8 cm','3 cm','8 cm','3 cm']},
+  hex: {sides:6,angles:'720°',perim:'24 cm',area:'41.6 cm²',title:'Hexagonul',
+        text:'6 laturi egale. Apare în faguri de miere! (6−2)×180 = 720°. Latura = 4 cm.',
+        pts:null,col:C.purple,slbls:['4cm','4cm','4cm','4cm','4cm','4cm']}
+};
+
+['tri','sq','rect','hex'].forEach(function(s){
+  var btn=document.getElementById('sb-'+s);
+  function go(e){if(e.type==='touchend')e.preventDefault();selectShape(s);}
+  btn.addEventListener('touchend',go,{passive:false});
+  btn.addEventListener('click',go);
+});
+
+function selectShape(s){
+  curShape=s;
+  ['tri','sq','rect','hex'].forEach(function(x){document.getElementById('sb-'+x).classList.toggle('sel',x===s);});
+  drawShape(s);
+}
+
+function drawShape(s){
+  var cv=document.getElementById('c-forms');if(!cv)return;
+  var ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle=C.bg2;ctx.fillRect(0,0,W,H);
+  var d=SD[s],pts=(s==='hex')?hexPts(160,103,78):d.pts,col=d.col;
+  poly(ctx,pts,col+'26',null);poly(ctx,pts,null,col,2.5);
+  pts.forEach(function(p){ctx.beginPath();ctx.arc(p[0],p[1],4.5,0,6.28);ctx.fillStyle=col;ctx.fill();});
+  ctx.font='700 11px Nunito,sans-serif';ctx.textAlign='center';
+  for(var i=0;i<pts.length;i++){
+    var p1=pts[i],p2=pts[(i+1)%pts.length];
+    var mx=(p1[0]+p2[0])/2,my=(p1[1]+p2[1])/2;
+    var dx=p2[0]-p1[0],dy=p2[1]-p1[1],len=Math.sqrt(dx*dx+dy*dy);
+    ctx.fillStyle=col;ctx.fillText(d.slbls[i],mx-dy/len*16,my+dx/len*16+4);
+  }
+  document.getElementById('sv-sides').textContent=d.sides;
+  document.getElementById('sv-angles').textContent=d.angles;
+  document.getElementById('sv-perim').textContent=d.perim;
+  document.getElementById('sv-area').textContent=d.area;
+  document.getElementById('sd-title').textContent=d.title;
+  document.getElementById('sd-text').textContent=d.text;
+}
+
+/* ── ANGLES ── */
+var curAngle=90;
+document.getElementById('ang-slider').addEventListener('input',function(){
+  curAngle=parseInt(this.value);
+  document.getElementById('ang-val').textContent=curAngle+'°';
+  drawAngle(curAngle);updateAngleCard(curAngle);
+});
+
+function updateAngleCard(deg){
+  var t,d;
+  if(deg<90)     {t='Unghi ascuțit';d='Mai mic de 90°. Ascuțit ca vârful unui creion. Exemplu: colțul unui acoperiș înalt.';}
+  else if(deg===90){t='Unghi drept'; d='Exact 90°. Recunoscut prin pătrățelul din colț. Colțul caietului sau al foii!';}
+  else if(deg===180){t='Unghi plat'; d='Exact 180°. Arată ca o linie dreaptă.';}
+  else if(deg<180){t='Unghi obtuz'; d='Între 90° și 180°. Mai deschis decât un unghi drept. Laptopul deschis larg!';}
+  else            {t='Unghi reflex';d='Mai mare de 180°. Înconjoară mai mult de jumătate din cerc.';}
+  document.getElementById('ang-type-title').textContent=t;
+  document.getElementById('ang-type-desc').textContent=d;
+}
+
+function drawAngle(deg){
+  var cv=document.getElementById('c-angles');if(!cv)return;
+  var ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle=C.bg2;ctx.fillRect(0,0,W,H);
+  var ox=110,oy=155,r=95,rad=deg*Math.PI/180;
+  var col=deg<90?C.amber:deg===90?C.teal:deg<180?C.coral:C.purple;
+  ctx.beginPath();ctx.moveTo(ox,oy);ctx.arc(ox,oy,r,0,-rad,true);ctx.closePath();
+  ctx.fillStyle=col+'20';ctx.fill();
+  ctx.beginPath();ctx.arc(ox,oy,r*.45,0,-rad,true);
+  ctx.strokeStyle=col+'aa';ctx.lineWidth=2;ctx.stroke();
+  ctx.strokeStyle=C.text;ctx.lineWidth=3;ctx.lineCap='round';
+  ctx.beginPath();ctx.moveTo(ox,oy);ctx.lineTo(ox+r+28,oy);ctx.stroke();
+  var ex=ox+Math.cos(-rad)*(r+28),ey=oy+Math.sin(-rad)*(r+28);
+  ctx.beginPath();ctx.moveTo(ox,oy);ctx.lineTo(ex,ey);ctx.stroke();
+  if(deg===90){ctx.strokeStyle=C.teal;ctx.lineWidth=2;ctx.strokeRect(ox,oy-16,16,16);}
+  ctx.beginPath();ctx.arc(ox,oy,5,0,6.28);ctx.fillStyle=C.text;ctx.fill();
+  var lx=ox+Math.cos(-rad/2)*(r*.35),ly=oy+Math.sin(-rad/2)*(r*.35);
+  ctx.fillStyle=col;ctx.font='700 14px Nunito,sans-serif';ctx.textAlign='center';ctx.fillText(deg+'°',lx,ly+5);
+  var tag=deg<90?'ascuțit':deg===90?'drept':deg<180?'obtuz':deg===180?'plat':'reflex';
+  ctx.fillStyle=col;ctx.font='600 12px Nunito,sans-serif';ctx.textAlign='left';ctx.fillText('▸ '+tag,ox+r+14,oy-28);
+}
+
+/* ── QUIZ ── */
+var QS=[
+  {q:'Cum calculăm perimetrul unui pătrat cu latura de 6 cm?',
+   opts:['6 + 6 = 12 cm','6 × 4 = 24 cm','6 × 6 = 36 cm','6 ÷ 4 = 1,5 cm'],
+   correct:1,ok:'✅ Bravo! Pătrat = 4 laturi egale → 6×4 = 24 cm.',no:'❌ Nu chiar. 4 laturi × 6 cm = 24 cm.'},
+  {q:'Ce tip de unghi are mai puțin de 90°?',
+   opts:['Obtuz','Reflex','Drept','Ascuțit'],
+   correct:3,ok:'✅ Corect! Unghiul ascuțit < 90°. Ca vârful unui ac!',no:'❌ Nu. Ascuțit < 90°. Gândește-te la vârful unui ac!'},
+  {q:'Un triunghi echilateral are laturile de 4 cm. Cât este perimetrul?',
+   opts:['8 cm','16 cm','12 cm','4 cm'],
+   correct:2,ok:'✅ Excelent! 3 laturi × 4 cm = 12 cm.',no:'❌ 3 laturi × 4 cm = 12 cm.'}
+];
+var curQ=0,answered=false,score=0;
+
+function renderQ(){
+  document.getElementById('quiz-area').style.display='block';
+  document.getElementById('score-area').style.display='none';
+  answered=false;
+  var q=QS[curQ];
+  document.getElementById('quiz-num').textContent='Întrebarea '+(curQ+1)+' din '+QS.length;
+  document.getElementById('prog-fill').style.width=((curQ+1)/QS.length*100)+'%';
+  document.getElementById('quiz-q').textContent=q.q;
+  document.getElementById('quiz-fb').style.display='none';
+  document.getElementById('quiz-fb').className='feedback';
+  document.getElementById('quiz-next').style.display='none';
+  var cont=document.getElementById('quiz-opts');
+  cont.innerHTML='';
+  q.opts.forEach(function(o,i){
+    var b=document.createElement('button');
+    b.type='button';b.className='quiz-opt';b.textContent=o;
+    function go(e){if(e.type==='touchend')e.preventDefault();answer(i,b);}
+    b.addEventListener('touchend',go,{passive:false});
+    b.addEventListener('click',go);
+    cont.appendChild(b);
+  });
+}
+
+function answer(i,btn){
+  if(answered)return;answered=true;
+  var q=QS[curQ],isOk=(i===q.correct);
+  if(isOk)score++;
+  document.querySelectorAll('.quiz-opt').forEach(function(b,j){
+    if(j===q.correct)b.classList.add('correct');
+    else if(j===i&&!isOk)b.classList.add('wrong');
+    b.disabled=true;
+  });
+  var fb=document.getElementById('quiz-fb');
+  fb.style.display='block';fb.className='feedback '+(isOk?'ok':'no');
+  fb.textContent=isOk?q.ok:q.no;
+  var nb=document.getElementById('quiz-next');
+  nb.style.display='block';
+  nb.textContent=curQ<QS.length-1?'Continuă →':'Vezi rezultatul 🎉';
+}
+
+(function(){
+  var nb=document.getElementById('quiz-next');
+  function go(e){if(e.type==='touchend')e.preventDefault();nextQ();}
+  nb.addEventListener('touchend',go,{passive:false});
+  nb.addEventListener('click',go);
+  var rb=document.getElementById('retry-btn');
+  function goR(e){if(e.type==='touchend')e.preventDefault();restartQuiz();}
+  rb.addEventListener('touchend',goR,{passive:false});
+  rb.addEventListener('click',goR);
+})();
+
+function nextQ(){curQ<QS.length-1?(curQ++,renderQ()):showScore();}
+
+function showScore(){
+  document.getElementById('quiz-area').style.display='none';
+  document.getElementById('score-area').style.display='block';
+  var lvl=score===QS.length?2:score>0?1:0;
+  document.getElementById('score-emoji').textContent=['😅','🌟','🏆'][lvl];
+  document.getElementById('score-title').textContent=['Mai exersează!','Bine făcut!','Felicitări!'][lvl];
+  document.getElementById('score-sub').textContent='Ai '+score+' din '+QS.length+' corecte. '+['Nu-ți fă griji!','Ești pe drumul cel bun!','Ai înțeles perfect!'][lvl];
+}
+
+function restartQuiz(){curQ=0;score=0;renderQ();}
+
+/* ── INIT ── wait for load + rAF to guarantee canvas is painted on iOS */
+window.addEventListener('load',function(){
+  window.requestAnimationFrame(function(){
+    drawIntro();
+    drawShape('tri');
+    drawAngle(90);
+    renderQ();
+  });
+});
+</script>
+</body>
+</html>
