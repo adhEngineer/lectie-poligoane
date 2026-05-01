@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Poligoane și Unghiuri</title>
+<title>Lecție interactivă pentru Albert 💙</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;700;800&family=Raleway:wght@400;600;700;800&display=swap');
 :root {
   --blue:#185FA5; --blue-l:#E6F1FB;
   --teal:#0F6E56; --teal-l:#E1F5EE;
@@ -21,18 +21,18 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{width:100%;overflow-x:hidden;}
-body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+body{font-family:'Raleway',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 .app{max-width:440px;margin:0 auto;padding-bottom:40px;}
 
 .header{background:linear-gradient(135deg,#1a1464 0%,#185FA5 50%,#0F6E56 100%);padding:28px 20px 22px;text-align:center;}
-.header-title{font-family:'Fredoka One',cursive;font-size:28px;color:#fff;letter-spacing:.5px;}
+.header-title{font-family:'Oxanium',sans-serif;font-size:28px;color:#fff;letter-spacing:.5px;}
 .header-sub{font-size:14px;color:rgba(255,255,255,.75);margin-top:4px;}
 
 .tabs{display:flex;background:var(--bg2);border-bottom:2px solid var(--border);position:sticky;top:0;z-index:10;}
 .tab{
   flex:1; display:block; padding:12px 4px;
   border:none; background:transparent;
-  color:var(--muted); font-family:'Nunito',sans-serif;
+  color:var(--muted); font-family:'Raleway',sans-serif;
   font-size:12px; font-weight:700; cursor:pointer;
   border-bottom:3px solid transparent; text-align:center;
   white-space:nowrap;
@@ -66,7 +66,7 @@ canvas{border-radius:8px;display:block;margin:0 auto;max-width:100%;}
   flex:1; min-width:70px; padding:9px 4px;
   border:1.5px solid var(--border); border-radius:var(--rs);
   background:#fff; color:var(--muted);
-  font-family:'Nunito',sans-serif; font-size:12px; font-weight:700;
+  font-family:'Raleway',sans-serif; font-size:12px; font-weight:700;
   cursor:pointer; text-align:center;
   touch-action:manipulation; -webkit-appearance:none;
 }
@@ -74,14 +74,14 @@ canvas{border-radius:8px;display:block;margin:0 auto;max-width:100%;}
 
 .stat-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
 .stat{background:var(--bg2);border-radius:var(--rs);padding:12px;text-align:center;}
-.stat-val{font-family:'Fredoka One',cursive;font-size:22px;color:var(--text);}
+.stat-val{font-family:'Oxanium',sans-serif;font-size:22px;color:var(--text);}
 .stat-lbl{font-size:12px;color:var(--muted);margin-top:2px;font-weight:600;}
 
 .angle-wrap{display:flex;align-items:center;gap:10px;margin:10px 0;padding:0 2px;}
 .angle-label{font-size:13px;font-weight:700;color:var(--muted);min-width:50px;}
 input[type=range]{flex:1;height:6px;-webkit-appearance:none;appearance:none;background:var(--bg2);border-radius:3px;outline:none;}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:var(--blue);cursor:pointer;box-shadow:0 2px 8px rgba(24,95,165,.35);}
-.angle-val{font-family:'Fredoka One',cursive;font-size:18px;color:var(--blue);min-width:52px;text-align:right;}
+.angle-val{font-family:'Oxanium',sans-serif;font-size:18px;color:var(--blue);min-width:52px;text-align:right;}
 
 .quiz-num{font-size:12px;color:var(--muted);font-weight:600;margin-bottom:6px;}
 .progress-bar{height:5px;background:var(--bg2);border-radius:3px;margin-bottom:12px;overflow:hidden;}
@@ -91,7 +91,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;heigh
   display:block; width:100%; padding:12px 14px; margin-bottom:8px;
   border:1.5px solid var(--border); border-radius:var(--rs);
   background:#fff; color:var(--text);
-  font-family:'Nunito',sans-serif; font-size:14px; font-weight:600;
+  font-family:'Raleway',sans-serif; font-size:14px; font-weight:600;
   cursor:pointer; text-align:left;
   touch-action:manipulation; -webkit-appearance:none;
 }
@@ -104,19 +104,19 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;heigh
   display:none; margin-top:10px; width:100%; padding:13px;
   border:none; border-radius:var(--rs);
   background:var(--blue); color:#fff;
-  font-family:'Nunito',sans-serif; font-size:15px; font-weight:700;
+  font-family:'Raleway',sans-serif; font-size:15px; font-weight:700;
   cursor:pointer; touch-action:manipulation; -webkit-appearance:none;
 }
 
 .score-card{text-align:center;padding:24px 16px;background:linear-gradient(135deg,var(--green-l),var(--teal-l));border-radius:var(--r);margin-bottom:12px;}
 .score-emoji{font-size:44px;margin-bottom:8px;}
-.score-title{font-family:'Fredoka One',cursive;font-size:24px;color:var(--teal);}
+.score-title{font-family:'Oxanium',sans-serif;font-size:24px;color:var(--teal);}
 .score-sub{font-size:14px;color:var(--muted);margin-top:4px;font-weight:600;}
 .retry-btn{
   margin-top:14px; padding:12px 28px;
   border:2px solid var(--teal); border-radius:var(--rs);
   background:transparent; color:var(--teal);
-  font-family:'Nunito',sans-serif; font-size:14px; font-weight:700;
+  font-family:'Raleway',sans-serif; font-size:14px; font-weight:700;
   cursor:pointer; touch-action:manipulation; -webkit-appearance:none;
 }
 
@@ -149,12 +149,12 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;heigh
   50%{opacity:1;transform:scale(1.05);}
 }
 .hero-msg{
-  font-family:'Fredoka One',cursive;
+  font-family:'Oxanium',sans-serif;
   font-size:17px;color:rgba(255,255,255,0.85);
   margin-bottom:2px;
 }
 .hero-name{
-  font-family:'Fredoka One',cursive;
+  font-family:'Oxanium',sans-serif;
   font-size:32px;color:#fff;
   display:block;
   line-height:1.1;
@@ -170,7 +170,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;heigh
   font-weight:600;margin-bottom:10px;
 }
 .hero-love{
-  font-family:'Fredoka One',cursive;
+  font-family:'Oxanium',sans-serif;
   font-size:20px;color:#fff;
   animation:pulse-love 2.4s ease-in-out infinite;
   animation-delay:0.3s;
@@ -180,7 +180,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;heigh
   50%{opacity:1;transform:scale(1.04);}
 }
 .hero-love2{
-  font-family:'Fredoka One',cursive;
+  font-family:'Oxanium',sans-serif;
   font-size:26px;color:#fff;
   margin-top:4px;
   animation:pulse-love2 2.4s ease-in-out infinite;
@@ -201,7 +201,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;heigh
 
 <div class="header">
   <div class="header-title">Poligoane și Unghiuri</div>
-  <div class="header-sub">Lecție interactivă pentru elevi</div>
+  <div class="header-sub">Lecție interactivă pentru Albert 💙</div>
 </div>
 
 <div class="tabs" id="tabs-bar">
@@ -387,8 +387,8 @@ function drawIntro(){
     var cx=s.pts.reduce(function(a,p){return a+p[0];},0)/s.pts.length;
     var cy=s.pts.reduce(function(a,p){return a+p[1];},0)/s.pts.length;
     ctx.textAlign='center';
-    ctx.fillStyle=s.col;ctx.font='700 11px Nunito,sans-serif';ctx.fillText(s.lbl,cx,cy-5);
-    ctx.fillStyle=C.muted;ctx.font='600 10px Nunito,sans-serif';ctx.fillText(s.sub,cx,cy+8);
+    ctx.fillStyle=s.col;ctx.font='700 11px Raleway,sans-serif';ctx.fillText(s.lbl,cx,cy-5);
+    ctx.fillStyle=C.muted;ctx.font='600 10px Raleway,sans-serif';ctx.fillText(s.sub,cx,cy+8);
   });
 }
 
@@ -429,7 +429,7 @@ function drawShape(s){
   var d=SD[s],pts=(s==='hex')?hexPts(160,103,78):d.pts,col=d.col;
   poly(ctx,pts,col+'26',null);poly(ctx,pts,null,col,2.5);
   pts.forEach(function(p){ctx.beginPath();ctx.arc(p[0],p[1],4.5,0,6.28);ctx.fillStyle=col;ctx.fill();});
-  ctx.font='700 11px Nunito,sans-serif';ctx.textAlign='center';
+  ctx.font='700 11px Raleway,sans-serif';ctx.textAlign='center';
   for(var i=0;i<pts.length;i++){
     var p1=pts[i],p2=pts[(i+1)%pts.length];
     var mx=(p1[0]+p2[0])/2,my=(p1[1]+p2[1])/2;
@@ -480,9 +480,9 @@ function drawAngle(deg){
   if(deg===90){ctx.strokeStyle=C.teal;ctx.lineWidth=2;ctx.strokeRect(ox,oy-16,16,16);}
   ctx.beginPath();ctx.arc(ox,oy,5,0,6.28);ctx.fillStyle=C.text;ctx.fill();
   var lx=ox+Math.cos(-rad/2)*(r*.35),ly=oy+Math.sin(-rad/2)*(r*.35);
-  ctx.fillStyle=col;ctx.font='700 14px Nunito,sans-serif';ctx.textAlign='center';ctx.fillText(deg+'°',lx,ly+5);
+  ctx.fillStyle=col;ctx.font='700 14px Raleway,sans-serif';ctx.textAlign='center';ctx.fillText(deg+'°',lx,ly+5);
   var tag=deg<90?'ascuțit':deg===90?'drept':deg<180?'obtuz':deg===180?'plat':'reflex';
-  ctx.fillStyle=col;ctx.font='600 12px Nunito,sans-serif';ctx.textAlign='left';ctx.fillText('▸ '+tag,ox+r+14,oy-28);
+  ctx.fillStyle=col;ctx.font='600 12px Raleway,sans-serif';ctx.textAlign='left';ctx.fillText('▸ '+tag,ox+r+14,oy-28);
 }
 
 /* ── QUIZ ── */
