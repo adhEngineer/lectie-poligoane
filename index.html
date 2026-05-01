@@ -144,7 +144,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;heigh
 <!-- INTRO -->
 <div class="panel active" id="panel-intro">
   <div class="canvas-wrap">
-    <canvas id="c-intro" width="320" height="170"></canvas>
+    <canvas id="c-intro" width="400" height="180"></canvas>
   </div>
   <div class="card">
     <h3>🌿 Gândește-te la o grădină</h3>
@@ -297,10 +297,10 @@ function drawIntro(){
   var ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
   ctx.clearRect(0,0,W,H);ctx.fillStyle=C.bg2;ctx.fillRect(0,0,W,H);
   var shapes=[
-    {pts:[[18,155],[82,155],[82,88],[18,88]],   col:C.blue,  lbl:'Pătrat',     sub:'4 laturi'},
-    {pts:[[50,88],[18,155],[82,155]],            col:C.amber, lbl:'Triunghi',   sub:'3 laturi'},
-    {pts:[[100,155],[210,155],[210,105],[100,105]],col:C.teal,lbl:'Dreptunghi', sub:'4 laturi'},
-    {pts:hexPts(270,120,46),                    col:C.purple,lbl:'Hexagon',    sub:'6 laturi'}
+    {pts:[[16,165],[76,165],[76,105],[16,105]],    col:C.blue,  lbl:'Pătrat',     sub:'4 laturi'},
+    {pts:[[130,165],[190,165],[160,105]],           col:C.amber, lbl:'Triunghi',   sub:'3 laturi'},
+    {pts:[[210,165],[310,165],[310,115],[210,115]], col:C.teal,  lbl:'Dreptunghi', sub:'4 laturi'},
+    {pts:hexPts(355,135,40),                       col:C.purple,lbl:'Hexagon',    sub:'6 laturi'}
   ];
   shapes.forEach(function(s){
     poly(ctx,s.pts,s.col+'28',null);
